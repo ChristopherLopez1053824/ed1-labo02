@@ -22,7 +22,9 @@ public class E03AVLTree<T> {
     private TreeNode<T> insert(TreeNode<T> root, T value) {
         if (root == null)
             return new TreeNode<>(value);
-
+        if (comparator.compare(value, root.value) == 0) {
+            return root;
+        }
         if (comparator.compare(value, root.value) < 0) {
             root.left = insert(root.left, value);
         } else {
@@ -36,7 +38,7 @@ public class E03AVLTree<T> {
     //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //Metodos para eliminar
     public void delete(T value) {
-        remove(root, value);
+        root = remove(root, value);
     }
 
     private TreeNode<T> remove(TreeNode<T> root, T value) {
@@ -49,19 +51,18 @@ public class E03AVLTree<T> {
         else if (comparator.compare(value, root.value) > 0) {
             root.right = remove(root.right, value);
         }
-        else {
+        else
+        {
             if (root.left == null)
                 return root.right;
             if (root.right == null)
                 return root.left;
-
             root.value = findMin(root.right).value;
             root.right = remove(root.right, root.value);
         }
         root = balanceBST(root);
         return root;
     }
-
     private TreeNode<T> findMin(TreeNode<T> root) {
         if (root == null)
             return null;
@@ -115,7 +116,7 @@ public class E03AVLTree<T> {
             if(L>R)
                 return 1+L;
             else
-                return R+1;
+                return 1+R;
         }
         else
             return 0;
@@ -124,6 +125,7 @@ public class E03AVLTree<T> {
     //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
     // Metodo para obtener
+    int Conteo = 0;
     public int size() {
         return countNodes(root);
     }
@@ -133,6 +135,7 @@ public class E03AVLTree<T> {
         {
             return 0;
         }
+        Conteo ++;
         return 1 + countNodes(root.left) + countNodes(root.right);
     }
 
